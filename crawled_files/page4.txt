@@ -1,0 +1,2 @@
+Hey guys. I am fairly new to programming, and I've just installed Linux, and I'd like to know more about Bash, because it seems like a great tool, it simplifies your work a lot. Are there any good tutorials about Bash? Thanks!
+

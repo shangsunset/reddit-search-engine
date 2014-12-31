@@ -1,0 +1,18 @@
+With the recent redesign, we've implemented a stylish new Post Flair system.  We'd like the community to start making more use of the feature for a couple of reasons:
+
+It makes it clear which posts are content, and which are questions.  This will help experienced community members reply quickly to questions they can help with, and will let people who are still learning quickly see resources and tutorials that may apply to them.
+It will help us easily see the distribution of content on the subreddit
+It will let us know if we need to add/remove any of the flair types, to better serve the community.
+
+In the near future, the moderator team will be tagging untagged posts with appropriate flair to get the ball rolling.  As a reminder, here are the flair types, as well as how to apply them:
+
+Resource: If your post is a list of resources, an online course, a video series, or any other general resource, this flair applies.
+Tutorial: If your post is a tutorial for a specific feature, tool, or library, use the "Tutorial" flair.
+Homework: If you are a student asking a question, you should tag it as "Homework".  This lets the community know that you're learning, and we should help guide you to the correct answer, rather than outright handing it over to you.
+Solved: If you've asked a question that was answered by the community (or even if you find an answer and comment it yourself), please tag the post as "Solved".  We prefer that you do not delete your posts after they're solved, so other members can search for them and benefit from your questions and comments.
+Topic: If your post isn't covered by any other flair, you can use the generic "Topic" flair to give additional context to your post.  The Topic flair is editable by all users, and will highlight the post as flaired, while displaying your custom flair topic.  Topics can range from a specific language (C++, Ruby, Javascript, etc.) to broader concepts (OOP, File IO, Threading, etc.)
+
+To apply flair to a post, simply create your post as usual, and click the "flair" link beneath the post on the homepage (or in the comments page for your post).  A small popup will appear where you can select your flair.  
+As always, thanks for your time and help,
+The Moderators
+
