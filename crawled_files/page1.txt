@@ -1,4 +1,9 @@
-I have these 2 friends work on making video games for phones. well i asked them if i could work there after I learn programing
-They sold me a software called RPG Maker VX Ace, first off.. I know I got ripped off because I checked the website and it costs $59.99 there but I got it off them for $120. 
-Now second thing is I did ask others and it seems this is not what programmers are using.
+This was just on my mind and I wanted to share it real quick.
+I've been using Visual Studio since the day I started programming - about 7 years. I learned a few weeks ago that "Ctrl + Shift + T"* brings up a window which presents all files in your solution. As you type, the list of files is filtered. Pressing enter opens a file. As you can imagine, this is way faster than digging through folders until finding the file:
+
+http://i.imgur.com/GIGxJ3J.png
+
+* Apparently, this is actually ReSharper's doing, not Visual Studio itself.
+It's all too easy to become content with your development process. You don't know what you don't know, so you assume you're doing it reasonably quickly.. but there's always more improvements to be had!
+So, when you're tired of programming at the end of today, consider taking a few minutes to learn a new shortcut in your IDE. You'll be stoked with the time you save in the long run. :)
 
