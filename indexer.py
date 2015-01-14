@@ -20,7 +20,7 @@ class Indexer:
     def __init__(self):
         self.forward_index = dict()
         self.inverted_index = dict()
-        self.url_to_id = dict()
+        self.id_to_url = dict()
         self.doc_count = 0
 
 
@@ -28,9 +28,10 @@ class Indexer:
     #parsed_text is a list of words
     def add_doc(self, url, parsed_text):
         self.doc_count += 1
-        assert url not in self.url_to_id
+        assert url not in self.id_to_url
         current_id = self.doc_count
         self.forward_index[current_id] = parsed_text
+        self.id_to_url[current_id] = url
 
         for position, word in enumerate(parsed_text):
             if word not in self.inverted_index:
@@ -38,19 +39,46 @@ class Indexer:
             self.inverted_index[word].append((position, current_id))
 
 
+
     def save_on_disk(self, index_dir):
-        forward_index_filename = os.path.join(index_dir, "forward_index")
-        inverted_index_filename = os.path.join(index_dir, "inverted_index")
-        url_to_id_filename = os.path.join(index_dir, "url_to_id")
 
-        forward_index_file = open(forward_index_filename, "w")
-        inverted_index_file = open(inverted_index_filename, "w")
-        url_to_id_file = open(url_to_id_filename, "w")
+        def dump_json_to_file(source, filename):
+            file_path = os.path.join(index_dir, filename)
+            f = open(file_path, "w")
+            json.dump(source, f, indent=4)
 
-        json.dump(self.forward_index, forward_index_file, indent=4)
-        json.dump(self.inverted_index, inverted_index_file, indent=4)
-        json.dump(self.url_to_id, url_to_id_file, indent=4)
+        dump_json_to_file(self.forward_index, "forward_index")
+        dump_json_to_file(self.inverted_index, "inverted_index")
+        dump_json_to_file(self.id_to_url, "id_to_url")
 
+
+
+class Searcher:
+
+    def __init__(self, index_dir):
+        self.forward_index = dict()
+        self.inverted_index = dict()
+        self.id_to_url = dict()
+
+
+        def load_json_from_files(filename):
+            file_path = os.path.join(index_dir, filename)
+            return json.load(open(file_path))
+
+        self.forward_index = load_json_from_files("forward_index")
+        self.inverted_index = load_json_from_files("inverted_index")
+        self.id_to_url = load_json_from_files("id_to_url")
+
+
+
+    #query is a list of words: query -> [word1, word2, word3 ...]
+    #find_doc returns all the documents coresponding to each word in query
+    def find_doc(self, query):
+        return sum([self.inverted_index[word] for word in query], [])
+
+
+    def get_doc_url(self, doc_id):
+        return self.id_to_url[doc_id]
 
 def doc_to_index(crawled_files_dir, index_dir):
     indexer = Indexer()
@@ -65,8 +93,8 @@ def doc_to_index(crawled_files_dir, index_dir):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--crawled_files_dir', dest='crawled_files_dir')
-    parser.add_argument('--index_dir', dest='index_dir')
+    parser.add_argument('--crawled_files_dir', dest='crawled_files_dir', required=True)
+    parser.add_argument('--index_dir', dest='index_dir', required=True)
     args = parser.parse_args()
     doc_to_index(args.crawled_files_dir, args.index_dir)
 

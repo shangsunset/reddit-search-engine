@@ -3,12 +3,14 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+from indexer import Searcher
 
 app = Flask(__name__)
 Bootstrap(app)
+searcher = Searcher("indexes")
 
 class SearchForm(Form):
-    user_query = StringField('user_query', validators=[DataRequired()])
+    user_query = StringField('User Query', validators=[DataRequired()])
     search_button = SubmitField('Search')
 
 @app.route('/', methods=('GET', 'POST'))
@@ -20,7 +22,9 @@ def index():
 
 @app.route('/search_results/<user_query>')
 def search_results(user_query):
-    return render_template('search_results.html', query=user_query)
+    pos_and_docId = searcher.find_doc(user_query.split(" "))
+    urls = [searcher.get_doc_url(str(id)) for pos, id in pos_and_docId]
+    return render_template('search_results.html', query=user_query, urls=urls)
 
 if __name__ == '__main__':
     app.run(debug=True)

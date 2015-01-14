@@ -1,0 +1,17 @@
+{% extends "bootstrap/base.html" %}
+
+
+
+{% block title %}Search Reddit{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>User Query: {{query}}</h1>
+  <ol>
+    {% for url in urls %}
+    <li><a href="{{url}}" target="_blank">{{url}}</a></li>
+    {% endfor %}
+  </ol>
+
+</div
+{% endblock %}

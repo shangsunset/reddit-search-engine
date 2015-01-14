@@ -64,8 +64,8 @@ def main():
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--start_url', dest='url')
-    parser.add_argument('--file_dir', dest='file_dir')
+    parser.add_argument('--start_url', dest='url', required=True)
+    parser.add_argument('--file_dir', dest='file_dir', required=True)
     args = parser.parse_args()
     crawler = Crawler(args.url, args.file_dir)
     crawler.crawl()
