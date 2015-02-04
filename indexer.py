@@ -1,9 +1,11 @@
 from utils import *
+import sys
 import logging
 import os
 import argparse
 import base64
 import json
+from collections import defaultdict
 
 logger = logging.getLogger(__name__)
 
@@ -73,12 +75,56 @@ class Searcher:
 
     #query is a list of words: query -> [word1, word2, word3 ...]
     #find_doc returns all the documents coresponding to each word in query
-    def find_doc(self, query):
-        return sum([self.inverted_index[word] for word in query], [])
+    def find_doc(self, query_terms):
+        return sum([self.inverted_index[word] for word in query_terms], [])
+
+
+    def find_doc_AND(self, query_terms):
+        query_terms_count = defaultdict(set)
+        for term in query_terms:
+            for (pos, doc_id) in self.inverted_index.get(term, []):
+                query_terms_count[doc_id].add(term)
+
+        return [doc_id for doc_id, unique_hits in query_terms_count.iteritems() if len(unique_hits) == len(query_terms)]
+
+
+    def generate_snippet(self, query_terms, doc_id):
+
+        query_terms_in_window = []
+        minimum_window_len = sys.maxint
+        terms_in_minimum_window = 0
+        minimum_window = []
+
+        for pos, term in enumerate(self.forward_index[doc_id]):
+            if term in query_terms:
+                query_terms_in_window.append((term, pos))
+
+                if len(query_terms_in_window) > 1 and query_terms_in_window[0][0] == term:
+                    query_terms_in_window.pop(0)
+
+                current_window_len = pos - query_terms_in_window[0][1] + 1
+                num_terms_in_window = len(set(map(lambda x: x[0], query_terms_in_window)))
+
+                if num_terms_in_window > terms_in_minimum_window or (num_terms_in_window == terms_in_minimum_window and current_window_len < minimum_window_len):
+                    terms_in_minimum_window = num_terms_in_window
+                    minimum_window_len = current_window_len
+                    #copy an old list and get a new list
+                    minimum_window = list(query_terms_in_window)
+
+        doc_len = len(self.forward_index[doc_id])
+        # TODO: 15 should be a named constant
+        snippet_start = max(minimum_window[0][1] - 15, 0)
+        snippet_end = min(doc_len,minimum_window[len(minimum_window) - 1][1] + 1 + 15)
+
+        return [term for term in self.forward_index[doc_id][snippet_start:snippet_end]]
 
 
     def get_doc_url(self, doc_id):
         return self.id_to_url[doc_id]
+
+
+    def get_doc_text(self, doc_id):
+        return self.forward_index[doc_id]
 
 def doc_to_index(crawled_files_dir, index_dir):
     indexer = Indexer()

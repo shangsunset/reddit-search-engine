@@ -8,8 +8,13 @@
 <div class="container">
   <h1>User Query: {{query}}</h1>
   <ol>
-    {% for url in urls %}
-    <li><a href="{{url}}" target="_blank">{{url}}</a></li>
+    {% for url_and_text in urls_and_docs_text %}
+    {% set url = url_and_text[0] %}
+    {% set text = url_and_text[1] %}
+    <li>
+      <a href="{{url}}" target="_blank">{{url}}</a>
+      <p>{{text}}</p>
+    </li>
     {% endfor %}
   </ol>
 
